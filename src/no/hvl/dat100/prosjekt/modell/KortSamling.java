@@ -1,13 +1,15 @@
 package no.hvl.dat100.prosjekt.modell;
 
+import java.util.Arrays;
+
 import no.hvl.dat100.prosjekt.TODO;
 import no.hvl.dat100.prosjekt.kontroll.dommer.Regler;
 
 /**
- * Struktur for √• lagre ei samling kort. Kan lagre hele kortstokken. Det finnes
- * en konstant i klassen Regler som angir antall kort i hver av de 4 fargene. N√•r
+ * Struktur for Â lagre ei samling kort. Kan lagre hele kortstokken. Det finnes
+ * en konstant i klassen Regler som angir antall kort i hver av de 4 fargene. NÂr
  * programmet er ferdig settes denne til 13, men under utvikling / testing kan
- * det v√¶re praktisk √• ha denne mindre.
+ * det vÊre praktisk Â ha denne mindre.
  * 
  */
 public class KortSamling {
@@ -22,39 +24,21 @@ public class KortSamling {
 	 */
 	public KortSamling() {
 		
-		// TODO - START
+		antall = 0;
+		samling = new Kort[MAKS_KORT];
 		
-		throw new UnsupportedOperationException(TODO.constructor("KortSamling"));
-		// TODO - END
 	}
 
-	/**
-	 * Returnerer en tabell med kortene i samlinga. Tabellen trenger ikke v√¶re
-	 * full. Kortene ligger sammenhengende fra starten av tabellen. Kan f√•
-	 * tilgang til antallet ved √• bruke metoden getAntallKort(). Metoden er
-	 * f√∏rst og fremst ment √• brukes i testklasser. Om man trenger
-	 * kortene utenfor, anbefales metoden getAlleKort().
-	 * 
-	 * @return tabell av kort.
-	 */
 	public Kort[] getSamling() {
 		
 		return samling;
 		
 	}
 	
-	/**
-	 * Antall kort i samlingen.
-	 * 
-	 * @return antall kort i samlinga.
-	 */
 	public int getAntalKort() {
 		
-		// TODO - START
+		return antall;
 		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
 	}
 	
 	/**
@@ -64,11 +48,14 @@ public class KortSamling {
 	 */
 	public boolean erTom() {
 		
-		// TODO - START
-				
-		throw new UnsupportedOperationException(TODO.method());
+		/*boolean tom = false;
+		if(antall == 0) {
+			tom = true;
+		}
+		return tom;*/
 		
-		// TODO - END
+		return (antall == 0);
+		
 	}
 
 	/**
@@ -79,24 +66,24 @@ public class KortSamling {
 	 */
 	public void leggTil(Kort kort) {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
-		
+		if(antall < samling.length) {
+			samling[antall] = kort;
+			antall++;
+		}
 	}
 	
 	/**
-	 * Legger alle korta (hele kortstokken) til samlinga. Korta vil v√¶re sortert
-	 * slik at de normalt m√• stokkes f√∏r bruk.
+	 * Legger alle korta (hele kortstokken) til samlinga. Korta vil vÊre sortert
+	 * slik at de normalt mÂ stokkes f¯r bruk.
 	 */
 	public void leggTilAlle() {
 		
-		// TODO - START
-		// Husk: bruk Regler.MAKS_KORT_FARGE for √• f√• antall kort per farge
+		for(Kortfarge f : Kortfarge.values()) {
+			for(int i = 1; i <= Regler.MAKS_KORT_FARGE; i++) {
+				leggTil(new Kort(f,i)); 
+			}
+		}
 		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
 	}
 
 	/**
@@ -104,26 +91,28 @@ public class KortSamling {
 	 */
 	public void fjernAlle() {
 		
-		// TODO - START
+		for(int i = 0;  i < samling.length; i++) {
+			samling[i] = null;
+		}
+		antall = 0;
 		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
 	}
 	
 	/**
-	 * Ser p√• siste kortet i samlinga.
+	 * Ser pÂ siste kortet i samlinga.
 	 * 
 	 * @return siste kortet i samlinga, men det blir ikke fjernet. Dersom samalinga er tom, returneres
 	 *         null.
 	 */
 	public Kort seSiste() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
+		if(antall == 0) {
+			return null;
+		} else {
+			Kort siste = samling[antall-1];
+			return siste;
+		}
 
-		// TODO - END
-		
 	}
 
 	/**
@@ -134,15 +123,20 @@ public class KortSamling {
 	 */
 	public Kort taSiste() {
 		
-		// TODO - START
+		Kort siste = seSiste();
+				
+		if(siste == null) {
+			return null; 
+		} else {
+			samling[antall-1] = null;
+			antall--;
+			return siste;
+		}
 		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
 	}
 	
 	/**
-	 * Unders√∏ker om et kort finst i samlinga.
+	 * Unders¯ker om et kort finst i samlinga.
 	 * 
 	 * @param kort.
 	 * 
@@ -150,16 +144,18 @@ public class KortSamling {
 	 */
 	public boolean har(Kort kort) {
 		
-		// TODO - START
+		boolean finnes = false;
 		
-		throw new UnsupportedOperationException(TODO.method());
-		// return false;
-		// TODO - END
-		
+		for(int i = 0; i < antall; i++) {
+			if(samling[i].equals(kort)) {
+				finnes = true;
+			}
+		}
+		return finnes;
 	}
 
 	/**
-	 * Fjernar et kort fr√• samlinga. Dersom kortet ikke finnest i samlinga,
+	 * Fjernar et kort frÂ samlinga. Dersom kortet ikke finnest i samlinga,
 	 * skjer ingenting med samilingen
 	 * 
 	 * @param kort
@@ -170,26 +166,37 @@ public class KortSamling {
 			 
 	public boolean fjern(Kort kort) {
 		
-		// TODO - START
+		boolean fjernet = false;
 		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		for(int i = 0; i < antall; i++) {
+			if(samling[i] == kort) {
+				samling[i] = null;
+				samling[i] = samling[i+1];
+				antall--;
+				fjernet = true;
+			} else {
+				fjernet = false;
+			}
+		}
+		return fjernet;
 	}
-
+	
 	/**
 	 * Gir kortene som en tabell av samme lengde som antall kort i samlingen
 	 * 
-	 * @return tabell av kort som er i samlingen, der kort skal ha samme rekkef√∏lge
+	 * @return tabell av kort som er i samlingen, der kort skal ha samme rekkef¯lge
 	 *         som i kortsamlinga.
 	 */
 	public Kort[] getAllekort() {
 		
-		// TODO - START
+		Kort[] alleKort = new Kort[antall];
 		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		for(int i = 0; i < antall; i++) {
+			alleKort[i] = samling[i];
+		}
+		
+		return alleKort;
+		
 	
 	}
 	
